@@ -1,0 +1,5 @@
+pyqt_6-4:
+
+Example 실행 -> c: Communicate 생성, c-pyqtSignal-connect으로 close 연동
+-> 마우스클릭 -> mousePressEvent발생 -> c-pyqtSignal-emit으로 시그널 방출
+-> c-pyqtSignal과 연결된 close가 실행
