@@ -34,7 +34,6 @@ class SetEvironment(QWidget):
         self.exe_btn.setIcon(QIcon(os.path.join(self.PATH_BASE, self.icon_image)))
         self.exe_btn.setIconSize(QSize(28,28))
         
-
         # exe 지정된 파일 보여주기
         self.exe_view = QLabel('None', self)
         self.exe_view.setGeometry(130, 240, 400, 30)
