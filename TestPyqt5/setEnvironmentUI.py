@@ -19,7 +19,7 @@ class SetEvironment(QWidget):
 
     def initUI(self):
         self.lbl = QLabel('Set your Evironment', self)
-        self.lbl.setGeometry(50, 60, 300, 60)
+        self.lbl.setGeometry(70, 40, 300, 60)
         self.lbl.setFont(QFont("Arial Black", 14))
         
         # exe path
