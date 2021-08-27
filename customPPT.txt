@@ -1,0 +1,5 @@
+StartEnd|K|C:/Users/User/Downloads/Prj_aMotion (1).pptx
+AddMedia|four|C:/Users/User/Downloads/folder.png
+NextSlide|L
+PreviousSlide|five
+AddLink|one|five|www.naver.com

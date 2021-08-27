@@ -49,7 +49,7 @@ class SetEvironment(QWidget):
         self.ppt_btn.setGeometry(90, 390, 30, 30)
         self.ppt_btn.clicked.connect(self.ppt_fileopen)
         self.ppt_btn.setIcon(QIcon(os.path.join(self.PATH_BASE, self.icon_image)))
-        self.ppt_btn.setIconSize(QSize(28, 28))    
+        self.ppt_btn.setIconSize(QSize(28, 28))
 
         # ppt 지정된 파일 보여주기
         self.ppt_view = QLabel('None', self)

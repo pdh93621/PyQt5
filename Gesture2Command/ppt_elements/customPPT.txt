@@ -1,0 +1,5 @@
+StartEnd|K|C:/Python/Pyqt5/Gesture2Command/ppt_elements/test_ppt.pptx
+NextSlide|L
+PreviousSlide|zero
+AddMedia|one|K|C:/Python/Pyqt5/Gesture2Command/ppt_elements/amumu1.mp4
+AddLink|three|zero|www.naver.com

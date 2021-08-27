@@ -18,7 +18,7 @@ class StartEnd:
                 pyautogui.hotkey('alt', 'f4')
                 self.is_open_ppt = False
             else:
-                batch_ppt = 'start' + ' "'+ self.exepath + '" ' + self.pptpath
+                batch_ppt = f'start "{self.exepath}" "{self.pptpath}"'
                 os.system(batch_ppt)
                 time.sleep(4)
                 pyautogui.press('f5')
@@ -53,7 +53,7 @@ class AddMedia:
                 pyautogui.hotkey('alt', 'f4')
                 self.is_open_media = False
             else:
-                batch_media = 'start' + ' "'+ self.exepath + '" ' + self.mediapath
+                batch_media = f'start "{self.exepath}" "{self.mediapath}"'
                 os.system(batch_media)
                 self.is_open_media = True
 

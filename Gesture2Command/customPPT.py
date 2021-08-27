@@ -26,11 +26,13 @@ class CustomPPT(QWidget):
 
         self.current_motion2 = None
 
-        self.current_exepath = None
+        self.current_filepath = None
 
         self.current_mediapath = None
 
         self.current_link = None
+
+        self.wantdel = None
 
         self.initUI()
 
@@ -157,7 +159,9 @@ class CustomPPT(QWidget):
         self.show()
 
     def save_custom(self):
-        with open("customPPT.txt", "w") as f:
+        PATHBASE = os.path.dirname(__file__)
+        ppt_elements_path = os.path.join(PATHBASE, 'ppt_elements')
+        with open(os.path.join(ppt_elements_path, 'customPPT.txt'), "w") as f:
             for saved_command in self.saved_commands:
                 f.write(saved_command + '\n')
         
@@ -167,6 +171,9 @@ class CustomPPT(QWidget):
         self.wantdel = index.row()
 
     def del_command(self):
+        if self.wantdel == None:
+            return
+            
         if self.saved_commands:
             del self.saved_commands[self.wantdel]
         
@@ -176,7 +183,7 @@ class CustomPPT(QWidget):
             self.model.appendRow(QStandardItem(f'{i}. '+ saved_command))
             i += 1
         self.motion_list.setModel(self.model)
-
+        self.wantdel = None
 
     def push_command(self):
         if self.valid_test():
@@ -192,11 +199,11 @@ class CustomPPT(QWidget):
         command = self.current_class
         motion1 = self.current_motion1
         motion2 = self.current_motion2
-        exepath = self.current_exepath
+        filepath = self.current_filepath
         mediapath = self.current_mediapath
         link = self.current_link
 
-        current_result = [command, motion1, motion2, exepath, mediapath, link]
+        current_result = [command, motion1, motion2, filepath, mediapath, link]
         current_result = [i for i in current_result if i != None]
         return "|".join(current_result)
 
@@ -255,29 +262,34 @@ class CustomPPT(QWidget):
                 extra_setting.hide()
             self.extra_settings = []
 
-        if command == 'AddMedia':
+        if command == 'AddMedia' or command == 'StartEnd':
             
-            # exe path
-            self.exe_btn = QPushButton('exe',self)
-            self.exe_btn.setGeometry(118, 330, 63, 25)
-            self.exe_btn.clicked.connect(self.exe_fileopen)
+            # file path
+            if command == 'AddMedia':
+                self.file_btn = QPushButton('file',self)
+                self.file_btn.setGeometry(118, 330, 63, 25)
+                self.file_btn.clicked.connect(self.fileopen)
+            else:
+                self.file_btn = QPushButton('file',self)
+                self.file_btn.setGeometry(118, 330, 63, 25)
+                self.file_btn.clicked.connect(self.pptopen)
 
-            self.exe_view = QLabel('none', self)
-            self.exe_view.setGeometry(190, 330, 100, 25)
-            self.exe_view.setStyleSheet("color: #FF5733; border-style: solid; border-width: 2px; border-color: #FFC300; border-radius: 10px; ")
+            self.file_view = QLabel('none', self)
+            self.file_view.setGeometry(190, 330, 100, 25)
+            self.file_view.setStyleSheet("color: #FF5733; border-style: solid; border-width: 2px; border-color: #FFC300; border-radius: 10px; ")
 
-            self.media_btn = QPushButton('media',self)
-            self.media_btn.setGeometry(118, 370, 63, 25)
-            self.media_btn.clicked.connect(self.media_fileopen)
+            # self.media_btn = QPushButton('media',self)
+            # self.media_btn.setGeometry(118, 370, 63, 25)
+            # self.media_btn.clicked.connect(self.media_fileopen)
 
-            self.media_view = QLabel('none',self)
-            self.media_view.setGeometry(190, 370, 100, 25)
-            self.media_view.setStyleSheet("color: #FF5733; border-style: solid; border-width: 2px; border-color: #FFC300; border-radius: 10px; ")
+            # self.media_view = QLabel('none',self)
+            # self.media_view.setGeometry(190, 370, 100, 25)
+            # self.media_view.setStyleSheet("color: #FF5733; border-style: solid; border-width: 2px; border-color: #FFC300; border-radius: 10px; ")
 
-            self.extra_settings.append(self.exe_btn)
-            self.extra_settings.append(self.exe_view)
-            self.extra_settings.append(self.media_btn)
-            self.extra_settings.append(self.media_view)
+            self.extra_settings.append(self.file_btn)
+            self.extra_settings.append(self.file_view)
+            # self.extra_settings.append(self.media_btn)
+            # self.extra_settings.append(self.media_view)
 
             for extra_setting in self.extra_settings:
                 extra_setting.show()
@@ -296,18 +308,28 @@ class CustomPPT(QWidget):
             for extra_setting in self.extra_settings:
                 extra_setting.show()
             
-
-    def exe_fileopen(self):
-
-        filename =QFileDialog.getOpenFileName(self, 'Open File')
-        if filename[0].split('.')[-1] != 'exe':
+    def pptopen(self):
+        valid = ['pptx', 'ppt', 'pdf', 'pptm']
+        filename = QFileDialog.getOpenFileName(self, 'Open File')
+        if filename[0].split('.')[-1] not in valid:
             self.alert_box()
-            self.exe_view.setText('none')
-            self.current_exepath = None
+            self.file_view.setText('none')
+            self.current_filepath = None
+        else:
+            self.file_view.setText(filename[0])
+            self.current_filepath = filename[0]
+
+    def fileopen(self):
+        valid = ['mp4', 'wmv', 'avi', 'mkv', 'jpg', 'jpeg', 'png', 'gif', 'bmp', 'mpeg'] 
+        filename = QFileDialog.getOpenFileName(self, 'Open File')
+        if filename[0].split('.')[-1] not in valid:
+            self.alert_box()
+            self.file_view.setText('none')
+            self.current_filepath = None
         else:
             #print(filename[0])
-            self.exe_view.setText(filename[0])
-            self.current_exepath = filename[0]
+            self.file_view.setText(filename[0])
+            self.current_filepath = filename[0]
     
     def media_fileopen(self):
 
@@ -342,7 +364,7 @@ class CustomPPT(QWidget):
 
         self.current_motion2 = None
 
-        self.current_exepath = None
+        self.current_filepath = None
 
         self.current_mediapath = None
 
