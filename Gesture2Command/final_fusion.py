@@ -8,7 +8,7 @@ import numpy as np
 import cv2
 
 import custom_ppt
-import time
+
 import winreg
 
 from utils.torch_utils import time_sync
@@ -84,7 +84,11 @@ while True:
 
     # 입력된 gesture에 따라 command 수행하면 됨.
     if gestures.sum() > 0:
-        Gesture2Command(class_lists, gestures)
+        gesture = []
+        for n in range(len(gestures)):
+            if gestures[n]:
+                gesture.append(motion_lists[n])        
+        Gesture2Command(class_lists, gesture)
         # print(gestures.tolist(), motion_lists[gestures.tolist().index(1)])
         
 
